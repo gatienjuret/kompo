@@ -1,0 +1,74 @@
+import { h } from 'https://unpkg.com/preact@latest?module';
+import htm from 'https://unpkg.com/htm?module';
+const html = htm.bind(h);
+
+const PolasPage = ({ onNavigate }) => {
+    // Mock archive data
+    const archives = [
+        { date: 'Oct 2023', cover: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', count: 8 },
+        { date: 'Juin 2023', cover: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80', count: 12 },
+        { date: 'Jan 2023', cover: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80', count: 10 },
+    ];
+
+    return html`
+        <div class="h-full flex flex-col space-y-4 animate-fade-in bg-secondary pt-2">
+            <!-- Hero Section -->
+            <div class="bg-white p-6 rounded-[2rem] shadow-xl border border-accent text-center relative overflow-hidden group hover:border-primary transition-all duration-300 shrink-0">
+                <!-- Decorative background elements -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-secondary to-accent/20 rounded-bl-[100%] -z-10 transition-transform duration-500 group-hover:scale-110"></div>
+                <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-secondary to-accent/20 rounded-tr-[100%] -z-10 transition-transform duration-500 group-hover:scale-110"></div>
+                
+                <div class="w-16 h-16 bg-gradient-to-br from-neutral to-black rounded-2xl rotate-3 flex items-center justify-center mx-auto mb-4 shadow-xl group-hover:rotate-6 group-hover:scale-105 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                
+                <h2 class="text-2xl font-bold mb-2 text-neutral tracking-tight">Mettre à jour mes polas</h2>
+                <p class="text-neutral/60 text-sm mb-6 leading-relaxed px-4 font-medium">
+                    Assurez-vous d'avoir une belle lumière naturelle et un fond neutre.
+                </p>
+                
+                <button 
+                    onClick=${() => onNavigate('camera')}
+                    class="bg-neutral text-white px-8 py-4 rounded-2xl font-bold text-sm w-full hover:bg-primary transition transform active:scale-95 shadow-xl flex items-center justify-center space-x-3 group-hover:shadow-2xl"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Prendre des polas</span>
+                </button>
+            </div>
+
+            <!-- Archives Section -->
+            <div class="flex-1">
+                <div class="flex justify-between items-end mb-4 px-4">
+                    <h3 class="font-bold text-lg text-neutral">Archives</h3>
+                    <span class="text-xs text-neutral/40 font-medium uppercase tracking-wider">Historique</span>
+                </div>
+                
+                <div class="space-y-4">
+                    ${archives.map(item => html`
+                        <div class="bg-white p-2 rounded-2xl shadow-sm border border-accent flex items-center hover:shadow-md transition cursor-pointer hover:border-primary/30 group">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-secondary group-hover:opacity-90 transition">
+                                <img src="${item.cover}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500" />
+                            </div>
+                            <div class="ml-4 flex-1">
+                                <h4 class="font-bold text-neutral text-lg group-hover:text-primary transition-colors">${item.date}</h4>
+                                <p class="text-neutral/40 text-sm font-medium">${item.count} photos</p>
+                            </div>
+                            <div class="mr-4 text-accent group-hover:text-primary transition-colors bg-secondary p-2 rounded-full group-hover:bg-primary/10">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </div>
+                    `)}
+                </div>
+            </div>
+        </div>
+    `;
+};
+
+export default PolasPage;
