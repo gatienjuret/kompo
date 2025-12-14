@@ -94,7 +94,7 @@ function App() {
             </main>
 
             <!-- Navigation -->
-            ${currentPage !== 'camera' && currentPage !== 'profile' && currentPage !== 'all-photos' && currentPage !== 'archive-details' && html`<${Navigation} active=${currentPage} onChange=${setCurrentPage} />`}
+            ${currentPage !== 'camera' && currentPage !== 'profile' && currentPage !== 'all-photos' && currentPage !== 'archive-details' && currentPage !== 'login' && html`<${Navigation} active=${currentPage} onChange=${setCurrentPage} />`}
             
             <${NotificationsDrawer} isOpen=${isNotificationsOpen} onClose=${() => setIsNotificationsOpen(false)} />
         </div>

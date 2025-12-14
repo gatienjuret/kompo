@@ -13,7 +13,7 @@ const Navigation = ({ active, onChange }) => {
     ];
 
     const activeIndex = navItems.findIndex(item => item.id === active);
-    const activeItem = navItems[activeIndex];
+    const activeItem = navItems[activeIndex] || navItems[0]; // Fallback if not found
     const [isMoving, setIsMoving] = useState(false);
 
     useEffect(() => {
