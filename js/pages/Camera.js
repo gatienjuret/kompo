@@ -30,6 +30,11 @@ const CameraPage = ({ onNavigate }) => {
     ];
 
     const startCamera = async () => {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            setError("Votre navigateur ne supporte pas l'accès à la caméra.");
+            return;
+        }
+
         try {
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
@@ -45,7 +50,15 @@ const CameraPage = ({ onNavigate }) => {
             setError(null);
         } catch (err) {
             console.error("Error accessing camera:", err);
-            setError("Impossible d'accéder à la caméra. Vérifiez vos permissions.");
+            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                setError("L'accès à la caméra a été refusé. Veuillez l'autoriser dans les paramètres de votre navigateur.");
+            } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+                setError("Aucune caméra n'a été détectée.");
+            } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+                setError("La caméra est utilisée par une autre application.");
+            } else {
+                setError("Erreur d'accès à la caméra : " + err.message);
+            }
         }
     };
 
@@ -347,7 +360,31 @@ const CameraPage = ({ onNavigate }) => {
                 `}
                 
                 ${error 
-                    ? html`<div class="text-white text-center p-6">${error}</div>`
+                    ? html`
+                        <div class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black p-6 text-center animate-fade-in">
+                            <div class="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mb-6 border border-red-500/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                </svg>
+                            </div>
+                            <h3 class="text-white text-xl font-bold mb-3">Accès Caméra Requis</h3>
+                            <p class="text-white/60 mb-8 max-w-xs leading-relaxed">${error}</p>
+                            
+                            <button 
+                                onClick=${startCamera}
+                                class="bg-white text-black px-8 py-4 rounded-2xl font-bold tracking-widest hover:scale-105 active:scale-95 transition shadow-[0_0_20px_rgba(255,255,255,0.2)] mb-4 w-full max-w-xs"
+                            >
+                                RÉESSAYER
+                            </button>
+                            
+                            <button 
+                                onClick=${() => onNavigate('polas')}
+                                class="text-white/40 hover:text-white text-sm font-medium tracking-wide uppercase transition py-2"
+                            >
+                                Retour
+                            </button>
+                        </div>
+                    `
                     : capturedImage 
                         ? html`<img src="${capturedImage}" class="w-full h-full object-cover" />`
                         : html`<video ref=${videoRef} autoPlay playsInline muted class="w-full h-full object-cover transform ${facingMode === 'user' ? '-scale-x-100' : ''} transition-all duration-500 ${isOverlayVisible ? 'blur-lg' : ''}"></video>`
