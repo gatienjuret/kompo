@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>NoSuchBucket</Code><Message>The specified bucket does not exist</Message><BucketName>temp-trae-assets</BucketName><RequestId>297AWW5ZEHVPMT0C</RequestId><HostId>bn2zTbNgSgYCdX/DajM+HvC9/i0Tn3StGqWLEihWQmDdlLmkcwqnY1q6NGs3jRgRqZBzCQkq4bU=</HostId></Error>

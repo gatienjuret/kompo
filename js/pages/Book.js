@@ -111,12 +111,12 @@ const BookPage = ({ onNavigate }) => {
 
             <!-- Recent Additions Preview -->
             <div class="flex-1">
-                <div class="flex justify-between items-end mb-4 px-4">
+                <div class="flex justify-between items-end mb-4">
                     <h3 class="font-bold text-lg text-neutral">Derniers ajouts</h3>
                     <span onClick=${() => onNavigate('all-photos')} class="text-xs text-primary font-bold uppercase tracking-wider cursor-pointer hover:underline">Voir tout</span>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 px-2 pb-4">
+                <div class="grid grid-cols-2 gap-4 pb-4">
                     ${displayPhotos.map((photo, index) => {
                         const status = getStatus(index);
                         const label = getStatusLabel(status);

@@ -4,12 +4,8 @@ import { usePhotos } from '../store/PhotoStore.js';
 const html = htm.bind(h);
 
 const HomePage = ({ onNavigate }) => {
-    const { lastPhoto, lastPhotoDate } = usePhotos();
+    const { lastPhoto } = usePhotos();
     const bgImage = lastPhoto ? `url('${lastPhoto}')` : "url('./assets/polas-mannequin-paris-3.webp')";
-    
-    const formattedDate = lastPhotoDate 
-        ? new Date(lastPhotoDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
-        : 'Aucune';
 
     return html`
         <div class="flex flex-col h-full px-0 space-y-8 animate-fade-in bg-secondary">
@@ -23,7 +19,7 @@ const HomePage = ({ onNavigate }) => {
                 <!-- Main Feature: Polas -->
                 <button 
                     onClick=${() => onNavigate('polas')}
-                    class="flex-1 bg-neutral rounded-[2.5rem] p-8 text-white relative overflow-hidden group shadow-2xl flex flex-col justify-end items-start text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(167,38,38,0.2)] active:scale-95 active:shadow-lg border-2 border-transparent hover:border-primary/50"
+                    class="flex-1 bg-neutral rounded-[2.5rem] p-8 text-white relative overflow-hidden group shadow-2xl flex flex-col justify-end items-start text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(167,38,38,0.2)] active:scale-95 active:shadow-lg"
                 >
                     <!-- Background Image with Overlay -->
                     <div class="absolute inset-0 opacity-60 bg-cover bg-center transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" style="background-image: ${bgImage}"></div>
@@ -50,10 +46,7 @@ const HomePage = ({ onNavigate }) => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
                             </svg>
                         </div>
-                        <div>
-                            <span class="font-bold text-xl text-neutral tracking-tight mt-2 group-hover:text-primary transition-colors block">Book</span>
-                            <span class="text-xs text-gray-400 mt-1 block">Màj: ${formattedDate}</span>
-                        </div>
+                        <span class="font-bold text-xl text-neutral tracking-tight mt-2 group-hover:text-primary transition-colors">Book</span>
                     </button>
 
                     <button 
@@ -66,10 +59,7 @@ const HomePage = ({ onNavigate }) => {
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <div>
-                            <span class="font-bold text-xl text-neutral tracking-tight mt-2 group-hover:text-primary transition-colors block">Agenda</span>
-                            <span class="text-xs text-gray-400 mt-1 block">Prochain: Demain 14h</span>
-                        </div>
+                        <span class="font-bold text-xl text-neutral tracking-tight mt-2 group-hover:text-primary transition-colors">Agenda</span>
                     </button>
 
                     <button 
@@ -86,8 +76,7 @@ const HomePage = ({ onNavigate }) => {
                         </div>
                         <div class="text-right">
                             <span class="text-sm text-gray-400 block">Net estimé</span>
-                            <span class="text-xl font-bold text-primary block">3 570 €</span>
-                            <span class="text-xs text-green-600 font-medium block mt-1">↗ +12% vs M-1</span>
+                            <span class="text-xl font-bold text-primary">3 570 €</span>
                         </div>
                     </button>
                 </div>

@@ -13,44 +13,47 @@ const PolasPage = ({ onNavigate }) => {
     return html`
         <div class="h-full flex flex-col space-y-4 animate-fade-in bg-secondary pt-2">
             <!-- Hero Section -->
-            <div class="bg-white p-6 rounded-[2rem] shadow-xl border border-accent text-center relative overflow-hidden group hover:border-primary transition-all duration-300 shrink-0">
+            <div class="bg-neutral p-10 rounded-[2.5rem] shadow-2xl border border-white/10 text-center relative overflow-hidden group transition-all duration-300 shrink-0 transform hover:scale-[1.01]">
                 <!-- Decorative background elements -->
-                <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-secondary to-accent/20 rounded-bl-[100%] -z-10 transition-transform duration-500 group-hover:scale-110"></div>
-                <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-secondary to-accent/20 rounded-tr-[100%] -z-10 transition-transform duration-500 group-hover:scale-110"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-16 -mt-16 animate-pulse"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-accent/20 rounded-full blur-3xl -ml-10 -mb-10"></div>
                 
-                <div class="w-16 h-16 bg-gradient-to-br from-neutral to-black rounded-2xl rotate-3 flex items-center justify-center mx-auto mb-4 shadow-xl group-hover:rotate-6 group-hover:scale-105 transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="w-20 h-20 bg-white/10 backdrop-blur-md rounded-2xl rotate-3 flex items-center justify-center mx-auto mb-6 shadow-2xl ring-1 ring-white/20 group-hover:rotate-6 group-hover:scale-110 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                 </div>
                 
-                <h2 class="text-2xl font-bold mb-2 text-neutral tracking-tight">Mettre à jour mes polas</h2>
-                <p class="text-neutral/60 text-sm mb-6 leading-relaxed px-4 font-medium">
+                <h2 class="text-3xl font-bold mb-3 text-white tracking-tight">Mettre à jour mes polas</h2>
+                <p class="text-gray-400 text-base mb-8 leading-relaxed px-4 font-medium">
                     Assurez-vous d'avoir une belle lumière naturelle et un fond neutre.
                 </p>
                 
                 <button 
                     onClick=${() => onNavigate('camera')}
-                    class="bg-neutral text-white px-8 py-4 rounded-2xl font-bold text-sm w-full hover:bg-primary transition transform active:scale-95 shadow-xl flex items-center justify-center space-x-3 group-hover:shadow-2xl"
+                    class="bg-white text-black px-8 py-5 rounded-2xl font-bold text-lg w-full hover:bg-gray-100 transition transform active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center justify-center space-x-3"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    <span>Prendre des polas</span>
+                    <span>Lancer le shooting</span>
                 </button>
             </div>
 
             <!-- Archives Section -->
             <div class="flex-1">
-                <div class="flex justify-between items-end mb-4 px-4">
+                <div class="flex justify-between items-end mb-4">
                     <h3 class="font-bold text-lg text-neutral">Archives</h3>
                     <span class="text-xs text-neutral/40 font-medium uppercase tracking-wider">Historique</span>
                 </div>
                 
                 <div class="space-y-4">
                     ${archives.map(item => html`
-                        <div class="bg-white p-2 rounded-2xl shadow-sm border border-accent flex items-center hover:shadow-md transition cursor-pointer hover:border-primary/30 group">
+                        <div 
+                            onClick=${() => onNavigate('archive-details', item.date)}
+                            class="bg-white p-2 rounded-2xl shadow-sm border border-accent flex items-center hover:shadow-md transition cursor-pointer hover:border-primary/30 group"
+                        >
                             <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-secondary group-hover:opacity-90 transition">
                                 <img src="${item.cover}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500" />
                             </div>

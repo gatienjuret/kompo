@@ -97,7 +97,7 @@ const CalendarPage = () => {
 
             <!-- Events List -->
             <div>
-                <h3 class="font-bold text-lg mb-4 px-2 text-neutral">À venir</h3>
+                <h3 class="font-bold text-lg mb-4 text-neutral">À venir</h3>
                 <div class="space-y-4">
                     ${detailedEvents.map(event => html`
                         <div class="bg-white p-4 rounded-2xl shadow-sm border border-accent flex items-center hover:shadow-md transition hover:border-primary/30 group">

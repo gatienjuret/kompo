@@ -10,7 +10,6 @@ const html = htm.bind(h);
 const PhotoContext = createContext({
     userPhotos: [],
     lastPhoto: null,
-    lastPhotoDate: null,
     loading: false,
     addPhoto: async () => {}
 });
@@ -20,7 +19,6 @@ export const PhotoProvider = ({ children }) => {
     const { user } = useAuth();
     const [userPhotos, setUserPhotos] = useState([]);
     const [lastPhoto, setLastPhoto] = useState(null);
-    const [lastPhotoDate, setLastPhotoDate] = useState(null);
     const [loading, setLoading] = useState(false);
 
     // Charger les photos au démarrage ou quand l'utilisateur change
@@ -46,10 +44,7 @@ export const PhotoProvider = ({ children }) => {
                 // On garde juste l'image_data pour l'affichage, mais on pourrait garder tout l'objet
                 const photos = data.map(p => p.image_data);
                 setUserPhotos(photos);
-                if (photos.length > 0) {
-                    setLastPhoto(photos[0]);
-                    setLastPhotoDate(data[0].created_at);
-                }
+                if (photos.length > 0) setLastPhoto(photos[0]);
             }
         } catch (error) {
             console.error('Erreur chargement photos:', error);
@@ -67,7 +62,6 @@ export const PhotoProvider = ({ children }) => {
         // 1. Mise à jour optimiste (pour que l'interface soit réactive tout de suite)
         setUserPhotos(prev => [photoDataUrl, ...prev]);
         setLastPhoto(photoDataUrl);
-        setLastPhotoDate(new Date().toISOString());
 
         // 2. Sauvegarde en base de données
         try {
@@ -90,7 +84,7 @@ export const PhotoProvider = ({ children }) => {
     };
 
     return html`
-        <${PhotoContext.Provider} value=${{ userPhotos, lastPhoto, lastPhotoDate, loading, addPhoto }}>
+        <${PhotoContext.Provider} value=${{ userPhotos, lastPhoto, loading, addPhoto }}>
             ${children}
         <//>
     `;
@@ -100,7 +94,7 @@ export const PhotoProvider = ({ children }) => {
 export const usePhotos = () => {
     const context = useContext(PhotoContext);
     if (!context) {
-        return { userPhotos: [], lastPhoto: null, lastPhotoDate: null, addPhoto: () => {} };
+        return { userPhotos: [], lastPhoto: null, addPhoto: () => {} };
     }
     return context;
 };

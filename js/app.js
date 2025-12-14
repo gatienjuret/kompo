@@ -15,11 +15,14 @@ import CameraPage from './pages/Camera.js';
 import ProfilePage from './pages/Profile.js';
 import AllPhotosPage from './pages/AllPhotos.js';
 import LoginPage from './pages/Login.js';
+import FinancePage from './pages/Finance.js';
+import ArchiveDetailsPage from './pages/ArchiveDetails.js';
 import NotificationsDrawer from './components/NotificationsDrawer.js';
 
 function App() {
     const [currentPage, setCurrentPage] = useState('home');
     const [previousPage, setPreviousPage] = useState('home');
+    const [selectedArchiveDate, setSelectedArchiveDate] = useState(null);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const { user, loading } = useAuth();
 
@@ -32,18 +35,28 @@ function App() {
         }
     };
 
+    const handleNavigate = (page, data = null) => {
+        if (page === 'archive-details' && data) {
+            setSelectedArchiveDate(data);
+        }
+        setPreviousPage(currentPage);
+        setCurrentPage(page);
+    };
+
     const renderPage = () => {
         if (loading) return html`<div class="flex items-center justify-center h-full">Chargement...</div>`;
 
         const props = { 
-            onNavigate: setCurrentPage,
+            onNavigate: handleNavigate,
             onBack: () => setCurrentPage(previousPage)
         };
         switch(currentPage) {
             case 'home': return html`<${HomePage} ...${props} />`;
             case 'book': return html`<${BookPage} ...${props} />`;
             case 'polas': return html`<${PolasPage} ...${props} />`;
+            case 'archive-details': return html`<${ArchiveDetailsPage} date=${selectedArchiveDate} onBack=${() => setCurrentPage('polas')} />`;
             case 'calendar': return html`<${CalendarPage} ...${props} />`;
+            case 'finance': return html`<${FinancePage} ...${props} />`;
             case 'camera': return html`<${CameraPage} ...${props} />`;
             case 'profile': return user ? html`<${ProfilePage} ...${props} />` : html`<${LoginPage} ...${props} />`;
             case 'login': return html`<${LoginPage} ...${props} />`;
@@ -55,7 +68,7 @@ function App() {
     return html`
         <div class="flex flex-col h-full bg-secondary font-sans text-neutral">
             <!-- Header -->
-            ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'login' || currentPage === 'all-photos') ? null : html`
+            ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'login' || currentPage === 'all-photos' || currentPage === 'archive-details') ? null : html`
                 <header class="h-16 border-b-0 flex justify-between items-center px-6 bg-secondary z-20 shrink-0 pt-4">
                     <button 
                         onClick=${navigateToProfile}
@@ -76,12 +89,12 @@ function App() {
             `}
             
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'all-photos') ? 'bg-black p-0' : 'bg-secondary p-4 pb-24'}">
+            <main class="flex-1 overflow-y-auto ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'all-photos' || currentPage === 'archive-details') ? 'bg-black p-0' : 'bg-secondary px-6 pt-4 pb-24'}">
                 ${renderPage()}
             </main>
 
             <!-- Navigation -->
-            ${currentPage !== 'camera' && currentPage !== 'profile' && currentPage !== 'all-photos' && html`<${Navigation} active=${currentPage} onChange=${setCurrentPage} />`}
+            ${currentPage !== 'camera' && currentPage !== 'profile' && currentPage !== 'all-photos' && currentPage !== 'archive-details' && html`<${Navigation} active=${currentPage} onChange=${setCurrentPage} />`}
             
             <${NotificationsDrawer} isOpen=${isNotificationsOpen} onClose=${() => setIsNotificationsOpen(false)} />
         </div>
