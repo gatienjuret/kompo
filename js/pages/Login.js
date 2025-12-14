@@ -37,6 +37,9 @@ export default function LoginPage({ onNavigate }) {
         <div class="min-h-screen bg-secondary flex items-center justify-center p-4">
             <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
                 <div class="p-8">
+                    <div class="flex justify-center mb-6">
+                        <img src="/assets/icons/logo.png" alt="Kompo Logo" class="h-16 w-auto" />
+                    </div>
                     <h2 class="text-3xl font-bold text-center text-primary mb-2">
                         ${isLogin ? 'Connexion' : 'Inscription'}
                     </h2>
