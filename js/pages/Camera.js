@@ -125,7 +125,7 @@ const CameraPage = ({ onNavigate }) => {
         // Save current photo to the list
         const newPhotos = [...photos, capturedImage];
         setPhotos(newPhotos);
-        addPhoto(capturedImage); // Add to global store
+        // Photos are only added to global store on final validation
         
         if (isFreeMode) {
             // In free mode, just save and continue
@@ -160,7 +160,11 @@ const CameraPage = ({ onNavigate }) => {
         setIsReviewing(true);
     };
     
-    const handleSendToAgency = () => {
+    const handleSendToAgency = async () => {
+        // Save all photos to global store
+        for (const photo of photos) {
+            await addPhoto(photo);
+        }
         alert(`Photos envoyées à l'agence avec la note : "${userNote}"`);
         onNavigate('polas');
     };
@@ -354,7 +358,7 @@ const CameraPage = ({ onNavigate }) => {
 
                 ${countdown !== null && html`
                     <div class="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
-                        <div class="text-white text-9xl font-bold animate-ping drop-shadow-lg">${countdown > 0 ? countdown : ''}</div>
+                        <div class="text-white text-[10rem] font-bold font-mono tracking-tighter animate-pulse drop-shadow-2xl">${countdown > 0 ? countdown : ''}</div>
                     </div>
                 `}
                 
