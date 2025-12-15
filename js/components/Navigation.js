@@ -66,6 +66,27 @@ const Navigation = ({ active, onChange }) => {
                             </div>
                          </div>
                     </div>
+                    
+                    <!-- 2b. Sharp Icon Overlay (Absolute, Same Size, NO FILTER) -->
+                     <div class="absolute inset-0 pointer-events-none z-30">
+                         <div 
+                             class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)]"
+                             style="transform: translateX(${activeIndex * 100}%)"
+                         >
+                            <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-0 opacity-0' : 'scale-110 opacity-100'}">
+                                <svg 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    class="w-8 h-8 text-primary transition-all duration-300" 
+                                    fill="none" 
+                                    viewBox="0 0 24 24" 
+                                    stroke="currentColor"
+                                    style="stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;"
+                                >
+                                    <path d="${activeItem.icon}" />
+                                </svg>
+                            </div>
+                         </div>
+                    </div>
 
                     <!-- 3. Content Layer (Grid, Same Size, NO FILTER) -->
                     <div class="relative w-full h-full grid grid-cols-5 items-center">
