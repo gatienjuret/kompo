@@ -392,8 +392,8 @@ const CameraPage = ({ onNavigate }) => {
             </div>
 
             <!-- Footer Controls -->
-            ${!isReviewing && !showProposal && !isOverlayVisible && !showModeSelection && countdown === null && html`
-                <div class="bg-black p-8 pb-10 flex justify-center items-center space-x-12 relative z-20">
+            ${!isReviewing && !showProposal && !isOverlayVisible && !showModeSelection && html`
+                <div class="bg-black p-8 pb-10 flex justify-center items-center space-x-12 relative z-20 ${countdown !== null ? 'opacity-0 pointer-events-none' : 'opacity-100'} transition-opacity duration-300">
                     ${capturedImage 
                         ? html`
                             <button onClick=${savePhoto} class="text-white font-bold px-8 py-3 rounded-full bg-primary hover:bg-primary/90 shadow-lg transform active:scale-95 transition flex items-center space-x-2">
