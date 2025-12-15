@@ -1,6 +1,6 @@
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open('model-app-store').then((cache) => cache.addAll([
+    caches.open('model-app-store-v2').then((cache) => cache.addAll([
       '/',
       '/index.html',
       '/js/app.js',

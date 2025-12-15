@@ -4,6 +4,8 @@ import htm from 'https://unpkg.com/htm?module';
 import { PhotoProvider } from './store/PhotoStore.js';
 import { AuthProvider, useAuth } from './store/AuthStore.js';
 
+console.log('App loaded v2');
+
 const html = htm.bind(h);
 
 import Navigation from './components/Navigation.js';
