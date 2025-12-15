@@ -45,7 +45,6 @@ const PolasPage = ({ onNavigate }) => {
             <div class="flex-1">
                 <div class="flex justify-between items-end mb-4">
                     <h3 class="font-bold text-lg text-neutral">Archives</h3>
-                    <span class="text-xs text-neutral/40 font-medium uppercase tracking-wider">Historique</span>
                 </div>
                 
                 <div class="space-y-4">
