@@ -40,21 +40,26 @@ const Navigation = ({ active, onChange }) => {
                 <div class="relative w-full h-full">
                     
                     <!-- 2. Liquid Layer (Absolute, Same Size, WITH FILTER) -->
-                    <div class="absolute inset-0 pointer-events-none" style="filter: url('#goo'); -webkit-filter: url('#goo');">
+                    <!-- Removed filter: url('#goo') to avoid blobby merging artifacts. We want a clean glass lens sliding. -->
+                    <div class="absolute inset-0 pointer-events-none">
                          <!-- Indicator (positioned relative to this container) -->
                          <div 
                              class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] z-20"
                              style="transform: translateX(${activeIndex * 100}%)"
                          >
-                            <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-50' : 'scale-110'}">
+                            <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-x-125 scale-y-75' : 'scale-100'}">
                                 <!-- 
                                      PURE GLASS INDICATOR
-                                     Instead of a colored blob, we use a semi-transparent, blurry circle.
-                                     The 'backdrop-blur' creates the glass distortion effect.
-                                     The 'mix-blend-mode' helps it blend with the background.
-                                     'shadow-inner' creates the 3D bevel look.
+                                     A clean, pill/circle shape that acts as a lens.
+                                     - bg-white/20: Semi-transparent body.
+                                     - backdrop-blur-[2px]: Subtle blur to distort what's behind (the icon placeholder or bg).
+                                     - shadow-[...]: Deep inset shadows for the "thick glass" bevel effect.
+                                     - border-white/40: Crisp edge.
                                 -->
-                                <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),inset_0_-1px_1px_rgba(0,0,0,0.1),0_4px_6px_rgba(0,0,0,0.1)] border border-white/30 transition-all duration-300"></div>
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-b from-white/40 to-white/10 backdrop-blur-[1px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(0,0,0,0.1),0_8px_16px_rgba(0,0,0,0.15)] border border-white/50 transition-all duration-300"></div>
+                                
+                                <!-- Shine reflection on top -->
+                                <div class="absolute top-1 w-8 h-3 bg-gradient-to-b from-white/80 to-transparent rounded-full opacity-60"></div>
                             </div>
                          </div>
                     </div>
@@ -65,10 +70,11 @@ const Navigation = ({ active, onChange }) => {
                              class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)]"
                              style="transform: translateX(${activeIndex * 100}%)"
                          >
-                            <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-75 opacity-50' : 'scale-110 opacity-100'}">
+                            <!-- Icon is slightly magnified and colored when active -->
+                            <div class="relative flex items-center justify-center transition-all duration-300 scale-100 opacity-100">
                                 <svg 
                                     xmlns="http://www.w3.org/2000/svg" 
-                                    class="w-6 h-6 text-primary drop-shadow-md transition-all duration-300" 
+                                    class="w-6 h-6 text-primary drop-shadow-sm transition-all duration-300" 
                                     fill="none" 
                                     viewBox="0 0 24 24" 
                                     stroke="currentColor"
