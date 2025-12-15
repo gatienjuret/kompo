@@ -8,10 +8,10 @@ const HomePage = ({ onNavigate }) => {
     const bgImage = lastPhoto ? `url('${lastPhoto}')` : "url('./assets/polas-mannequin-paris-3.webp')";
 
     return html`
-        <div class="flex flex-col h-full px-0 space-y-8 animate-fade-in bg-secondary">
+        <div class="flex flex-col h-full px-0 space-y-8 animate-fade-in bg-secondary dark:bg-secondary-dark transition-colors duration-300">
             
             <div class="mt-4 flex items-baseline space-x-2">
-                <h1 class="text-3xl font-light text-neutral">Hello,</h1>
+                <h1 class="text-3xl font-light text-neutral dark:text-neutral-light transition-colors">Hello,</h1>
                 <h2 class="text-3xl font-bold text-primary">Maverick</h2>
             </div>
 
@@ -19,16 +19,16 @@ const HomePage = ({ onNavigate }) => {
                 <!-- Main Feature: Polas -->
                 <button 
                     onClick=${() => onNavigate('polas')}
-                    class="flex-1 bg-neutral rounded-[2.5rem] p-8 text-white relative overflow-hidden group shadow-2xl flex flex-col justify-end items-start text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(167,38,38,0.2)] active:scale-95 active:shadow-lg"
+                    class="flex-1 bg-neutral dark:bg-accent-dark rounded-[2.5rem] p-8 text-white relative overflow-hidden group shadow-2xl dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)] flex flex-col justify-end items-start text-left transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(167,38,38,0.2)] dark:hover:shadow-[0_20px_50px_rgba(167,38,38,0.15)] active:scale-95 active:shadow-lg border-0 dark:border dark:border-white/5"
                 >
                     <!-- Background Image with Overlay -->
-                    <div class="absolute inset-0 opacity-60 bg-cover bg-center transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" style="background-image: ${bgImage}"></div>
-                    <div class="absolute inset-0 bg-black/40"></div> <!-- Additional dark overlay -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-neutral via-neutral/50 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 opacity-60 dark:opacity-50 bg-cover bg-center transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" style="background-image: ${bgImage}"></div>
+                    <div class="absolute inset-0 bg-black/40 dark:bg-black/60"></div> <!-- Additional dark overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral dark:from-black via-neutral/50 dark:via-black/50 to-transparent opacity-90"></div>
                     
                     <div class="relative z-10 w-full flex justify-between items-end">
                         <div>
-                            <h3 class="text-5xl font-bold mb-2 tracking-tight">Polas</h3>
+                            <h3 class="text-5xl font-bold mb-2 tracking-tight text-white">Polas</h3>
                             <p class="text-accent text-base font-medium opacity-90">Gérez vos snaps & mises à jour</p>
                         </div>
                     </div>
@@ -38,44 +38,44 @@ const HomePage = ({ onNavigate }) => {
                 <div class="grid grid-cols-2 gap-4">
                     <button 
                         onClick=${() => onNavigate('book')}
-                        class="h-36 bg-white rounded-[2rem] p-5 shadow-xl border border-accent hover:border-primary transition-all duration-300 flex flex-col justify-between items-start text-left group hover:-translate-y-1 hover:shadow-2xl active:scale-95 active:shadow-md relative overflow-hidden"
+                        class="h-36 bg-white dark:bg-accent-dark rounded-[2rem] p-5 shadow-xl dark:shadow-none border border-accent dark:border-white/5 hover:border-primary dark:hover:border-primary transition-all duration-300 flex flex-col justify-between items-start text-left group hover:-translate-y-1 hover:shadow-2xl active:scale-95 active:shadow-md relative overflow-hidden"
                     >
                         
-                        <div class="p-3 bg-secondary rounded-2xl shadow-inner group-hover:scale-110 transition duration-300">
+                        <div class="p-3 bg-secondary dark:bg-white/5 rounded-2xl shadow-inner group-hover:scale-110 transition duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
                             </svg>
                         </div>
-                        <span class="font-bold text-xl text-neutral tracking-tight mt-2 group-hover:text-primary transition-colors">Book</span>
+                        <span class="font-bold text-xl text-neutral dark:text-neutral-light tracking-tight mt-2 group-hover:text-primary transition-colors">Book</span>
                     </button>
 
                     <button 
                         onClick=${() => onNavigate('calendar')}
-                        class="h-36 bg-white rounded-[2rem] p-5 shadow-xl border border-accent hover:border-primary transition-all duration-300 flex flex-col justify-between items-start text-left group hover:-translate-y-1 hover:shadow-2xl active:scale-95 active:shadow-md relative overflow-hidden"
+                        class="h-36 bg-white dark:bg-accent-dark rounded-[2rem] p-5 shadow-xl dark:shadow-none border border-accent dark:border-white/5 hover:border-primary dark:hover:border-primary transition-all duration-300 flex flex-col justify-between items-start text-left group hover:-translate-y-1 hover:shadow-2xl active:scale-95 active:shadow-md relative overflow-hidden"
                     >
 
-                        <div class="p-3 bg-secondary rounded-2xl shadow-inner group-hover:scale-110 transition duration-300">
+                        <div class="p-3 bg-secondary dark:bg-white/5 rounded-2xl shadow-inner group-hover:scale-110 transition duration-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <span class="font-bold text-xl text-neutral tracking-tight mt-2 group-hover:text-primary transition-colors">Agenda</span>
+                        <span class="font-bold text-xl text-neutral dark:text-neutral-light tracking-tight mt-2 group-hover:text-primary transition-colors">Agenda</span>
                     </button>
 
                     <button 
                         onClick=${() => onNavigate('finance')}
-                        class="col-span-2 h-32 bg-white rounded-[2rem] p-6 shadow-xl border border-accent hover:border-primary transition-all duration-300 flex items-center justify-between text-left group hover:-translate-y-1 hover:shadow-2xl active:scale-95 active:shadow-md relative overflow-hidden"
+                        class="col-span-2 h-32 bg-white dark:bg-accent-dark rounded-[2rem] p-6 shadow-xl dark:shadow-none border border-accent dark:border-white/5 hover:border-primary dark:hover:border-primary transition-all duration-300 flex items-center justify-between text-left group hover:-translate-y-1 hover:shadow-2xl active:scale-95 active:shadow-md relative overflow-hidden"
                     >
                         <div class="flex items-center gap-6">
-                            <div class="p-3 bg-secondary rounded-2xl shadow-inner group-hover:scale-110 transition duration-300">
+                            <div class="p-3 bg-secondary dark:bg-white/5 rounded-2xl shadow-inner group-hover:scale-110 transition duration-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <span class="font-bold text-2xl text-neutral tracking-tight group-hover:text-primary transition-colors">Mes Finances</span>
+                            <span class="font-bold text-2xl text-neutral dark:text-neutral-light tracking-tight group-hover:text-primary transition-colors">Mes Finances</span>
                         </div>
                         <div class="text-right">
-                            <span class="text-sm text-gray-400 block">Net estimé</span>
+                            <span class="text-sm text-gray-400 dark:text-gray-500 block">Net estimé</span>
                             <span class="text-xl font-bold text-primary">3 570 €</span>
                         </div>
                     </button>

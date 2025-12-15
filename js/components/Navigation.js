@@ -29,7 +29,7 @@ const Navigation = ({ active, onChange }) => {
 
     return html`
         <nav class="absolute bottom-6 left-6 right-6 h-16 rounded-full px-4 z-50 transition-all duration-300
-            bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-xl border border-white/30 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] ring-1 ring-white/40"
+            bg-gradient-to-br from-white/40 to-white/10 dark:from-black/40 dark:to-black/10 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] ring-1 ring-white/40 dark:ring-white/10"
         >
             <div class="relative w-full h-full grid grid-cols-5 items-center">
                 
@@ -79,7 +79,7 @@ const Navigation = ({ active, onChange }) => {
                     if (isActive) {
                         iconClasses += "opacity-0";
                     } else {
-                        iconClasses += "text-neutral/60 group-hover:text-neutral group-hover:scale-110";
+                        iconClasses += "text-neutral/60 dark:text-neutral-light/60 group-hover:text-neutral dark:group-hover:text-white group-hover:scale-110";
                     }
 
                     return html`

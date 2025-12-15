@@ -12,13 +12,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class', // Enable dark mode manually
             theme: {
                 extend: {
                     colors: {
                         primary: '#A72626', // Rouge profond
                         secondary: '#F1EFEA', // Crème
+                        'secondary-dark': '#121212', // Anthracite profond pour le dark mode
                         accent: '#DBDBDB', // Gris clair
+                        'accent-dark': '#2A2A2A', // Gris sombre pour les éléments UI
                         neutral: '#424242', // Gris foncé
+                        'neutral-light': '#E5E5E5', // Blanc cassé pour le texte en dark mode
                         black: '#000000',
                         white: '#ffffff',
                     },
@@ -37,6 +41,7 @@
     </script>
     <style>
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #F1EFEA; }
+        body.dark { background-color: #000000; } /* Dark background for body in dark mode */
         /* Hide scrollbar for Chrome, Safari and Opera */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
