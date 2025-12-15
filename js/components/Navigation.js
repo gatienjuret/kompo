@@ -29,31 +29,16 @@ const Navigation = ({ active, onChange }) => {
         >
             <div class="relative w-full h-full grid grid-cols-5 items-center">
                 
-                <!-- Morphing Indicator -->
+                <!-- Spotlight Indicator -->
                 <div 
-                    class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center pointer-events-none transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)]"
+                    class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center pointer-events-none transition-transform duration-[400ms] ease-[cubic-bezier(0.25,1,0.5,1)]"
                     style="transform: translateX(${activeIndex * 100}%)"
                 >
-                    <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-50' : 'scale-110'}">
-                        <!-- 
-                             The SVG itself morphs from a "Blob" (thick stroke) to the "Icon" (normal stroke).
-                             When moving: stroke-width is huge (12), making it look like a solid dot.
-                             When stopped: stroke-width is normal (2), revealing the icon.
-                        -->
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            class="w-8 h-8 text-primary transition-all duration-300" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                            style="stroke-width: ${isMoving ? '14px' : '2px'}; stroke-linecap: round; stroke-linejoin: round;"
-                        >
-                            <path d="${activeItem.icon}" />
-                        </svg>
-                        
-                        <!-- Glow Effect behind the active icon -->
-                         <div class="absolute inset-0 bg-primary/30 blur-md rounded-full -z-10 transition-opacity duration-300 ${isMoving ? 'opacity-0' : 'opacity-100'}"></div>
-                    </div>
+                    <!-- Spotlight Beam (Conical/Radial Gradient) -->
+                    <div class="absolute -top-12 w-24 h-32 bg-gradient-to-b from-primary/40 via-primary/10 to-transparent blur-xl rotate-0 transform origin-bottom transition-all duration-300 ${isMoving ? 'scale-x-75 opacity-50' : 'scale-x-100 opacity-100'}"></div>
+                    
+                    <!-- Floor Glow -->
+                    <div class="absolute bottom-2 w-10 h-10 bg-primary/20 blur-lg rounded-full"></div>
                 </div>
 
                 <!-- Nav Items -->
@@ -61,21 +46,18 @@ const Navigation = ({ active, onChange }) => {
                     const isActive = active === item.id;
                     const isHome = item.id === 'home';
                     
-                    // Base size classes
-                    let iconClasses = "transition-all duration-300 ";
+                    let iconClasses = "transition-all duration-500 relative z-10 ";
                     
                     if (isHome) {
                         iconClasses += "w-7 h-7 ";
                     } else {
-                        iconClasses += "w-5 h-5 ";
+                        iconClasses += "w-6 h-6 ";
                     }
 
-                    // Inactive state styling
-                    // Note: When active, we HIDE the static icon (opacity-0) so only the "Indicator" is visible.
                     if (isActive) {
-                        iconClasses += "opacity-0";
+                        iconClasses += "text-primary drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] scale-110";
                     } else {
-                        iconClasses += "text-neutral/60 group-hover:text-neutral group-hover:scale-110";
+                        iconClasses += "text-neutral/40 scale-90";
                     }
 
                     return html`

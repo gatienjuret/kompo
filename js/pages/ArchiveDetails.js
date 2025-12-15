@@ -14,7 +14,7 @@ const ArchiveDetailsPage = ({ date, onBack }) => {
     ];
 
     return html`
-        <div class="h-full flex flex-col bg-secondary animate-fade-in">
+        <div class="min-h-full flex flex-col bg-secondary animate-fade-in">
             <!-- Header -->
             <div class="px-6 py-4 flex items-center justify-between sticky top-0 bg-secondary/95 backdrop-blur-sm z-10 border-b border-neutral/5">
                 <button 
@@ -35,7 +35,7 @@ const ArchiveDetailsPage = ({ date, onBack }) => {
             </div>
 
             <!-- Grid -->
-            <div class="px-6 py-6 grid grid-cols-2 gap-4 pb-24 overflow-y-auto">
+            <div class="px-6 py-6 grid grid-cols-2 gap-4 pb-24">
                 ${photos.map((photo, index) => html`
                     <div class="bg-white p-2 rounded-2xl shadow-sm border border-accent/50 group animate-slide-up hover:shadow-lg transition-all duration-300 hover:-translate-y-1" style="animation-delay: ${index * 100}ms">
                         <div class="aspect-[3/4] rounded-xl overflow-hidden bg-secondary relative">
