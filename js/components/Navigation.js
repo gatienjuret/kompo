@@ -28,78 +28,86 @@ const Navigation = ({ active, onChange }) => {
     if (activeIndex === -1) return null;
 
     return html`
-        <nav 
-            class="absolute bottom-6 left-6 right-6 h-16 rounded-full px-4 z-50 transition-all duration-300
-                   bg-white/30 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] ring-1 ring-white/50"
-            style="filter: url('#goo');"
-        >
-            <div class="relative w-full h-full grid grid-cols-5 items-center">
+        <nav class="absolute bottom-6 left-6 right-6 h-16 z-50">
+            
+            <!-- 1. Glass Background (Independent, NO FILTER) -->
+            <div class="absolute inset-0 rounded-full bg-white/30 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] ring-1 ring-white/50"></div>
+
+            <!-- Wrapper that provides the padding context -->
+            <div class="relative w-full h-full px-4">
                 
-                <!-- Morphing Indicator -->
-                <div 
-                    class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center pointer-events-none transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] z-20"
-                    style="transform: translateX(${activeIndex * 100}%)"
-                >
-                    <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-50' : 'scale-110'}">
-                        <!-- 
-                             The SVG itself morphs from a "Blob" (thick stroke) to the "Icon" (normal stroke).
-                             When moving: stroke-width is huge (12), making it look like a solid dot.
-                             When stopped: stroke-width is normal (2), revealing the icon.
-                        -->
-                        <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            class="w-8 h-8 text-primary transition-all duration-300" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                            style="stroke-width: ${isMoving ? '14px' : '2px'}; stroke-linecap: round; stroke-linejoin: round;"
-                        >
-                            <path d="${activeItem.icon}" />
-                        </svg>
-                        
-                        <!-- Glow Effect behind the active icon -->
-                         <div class="absolute inset-0 bg-primary/30 blur-md rounded-full -z-10 transition-opacity duration-300 ${isMoving ? 'opacity-0' : 'opacity-100'}"></div>
+                <!-- The "Grid Container" context -->
+                <div class="relative w-full h-full">
+                    
+                    <!-- 2. Liquid Layer (Absolute, Same Size, WITH FILTER) -->
+                    <div class="absolute inset-0 pointer-events-none" style="filter: url('#goo'); -webkit-filter: url('#goo');">
+                         <!-- Indicator (positioned relative to this container) -->
+                         <div 
+                             class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] z-20"
+                             style="transform: translateX(${activeIndex * 100}%)"
+                         >
+                            <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-50' : 'scale-110'}">
+                                <!-- 
+                                     The SVG itself morphs from a "Blob" (thick stroke) to the "Icon" (normal stroke).
+                                -->
+                                <svg 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    class="w-8 h-8 text-primary transition-all duration-300" 
+                                    fill="none" 
+                                    viewBox="0 0 24 24" 
+                                    stroke="currentColor"
+                                    style="stroke-width: ${isMoving ? '14px' : '2px'}; stroke-linecap: round; stroke-linejoin: round;"
+                                >
+                                    <path d="${activeItem.icon}" />
+                                </svg>
+                                
+                                <!-- Glow Effect behind the active icon -->
+                                <div class="absolute inset-0 bg-primary/30 blur-md rounded-full -z-10 transition-opacity duration-300 ${isMoving ? 'opacity-0' : 'opacity-100'}"></div>
+                            </div>
+                         </div>
                     </div>
+
+                    <!-- 3. Content Layer (Grid, Same Size, NO FILTER) -->
+                    <div class="relative w-full h-full grid grid-cols-5 items-center">
+                        ${navItems.map((item) => {
+                            const isActive = active === item.id;
+                            const isHome = item.id === 'home';
+                            
+                            // Base size classes
+                            let iconClasses = "transition-all duration-300 ";
+                            
+                            if (isHome) {
+                                iconClasses += "w-7 h-7 ";
+                            } else {
+                                iconClasses += "w-5 h-5 ";
+                            }
+
+                            // Inactive state styling
+                            if (isActive) {
+                                iconClasses += "opacity-0";
+                            } else {
+                                iconClasses += "text-neutral/60 group-hover:text-neutral group-hover:scale-110";
+                            }
+
+                            return html`
+                            <button 
+                                class="relative flex items-center justify-center w-full h-full rounded-full transition-all duration-300 group z-10"
+                                onClick=${() => onChange(item.id)}
+                                title="${item.label}"
+                            >
+                                <!-- Inactive Icon Background (for Goo effect - moved here but won't goo with main blob across layers easily, but keeps blur) -->
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none">
+                                     <div class="w-8 h-8 bg-neutral/20 rounded-full blur-sm"></div>
+                                </div>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="${iconClasses}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${item.icon}" />
+                                </svg>
+                            </button>
+                        `})}
+                    </div>
+                    
                 </div>
-
-                <!-- Nav Items -->
-                ${navItems.map((item) => {
-                    const isActive = active === item.id;
-                    const isHome = item.id === 'home';
-                    
-                    // Base size classes
-                    let iconClasses = "transition-all duration-300 ";
-                    
-                    if (isHome) {
-                        iconClasses += "w-7 h-7 ";
-                    } else {
-                        iconClasses += "w-5 h-5 ";
-                    }
-
-                    // Inactive state styling
-                    // Note: When active, we HIDE the static icon (opacity-0) so only the "Indicator" is visible.
-                    if (isActive) {
-                        iconClasses += "opacity-0";
-                    } else {
-                        iconClasses += "text-neutral/60 group-hover:text-neutral group-hover:scale-110";
-                    }
-
-                    return html`
-                    <button 
-                        class="relative flex items-center justify-center w-full h-full rounded-full transition-all duration-300 group z-10"
-                        onClick=${() => onChange(item.id)}
-                        title="${item.label}"
-                    >
-                        <!-- Inactive Icon Background (for Goo effect) -->
-                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-20 transition-opacity duration-300">
-                             <div class="w-8 h-8 bg-neutral/20 rounded-full blur-sm"></div>
-                        </div>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" class="${iconClasses}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${item.icon}" />
-                        </svg>
-                    </button>
-                `})}
             </div>
         </nav>
     `;
