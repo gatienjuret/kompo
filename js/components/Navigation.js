@@ -56,10 +56,10 @@ const Navigation = ({ active, onChange }) => {
                                      - shadow-[...]: Deep inset shadows for the "thick glass" bevel effect.
                                      - border-white/40: Crisp edge.
                                 -->
-                                <div class="w-12 h-12 rounded-full bg-gradient-to-b from-white/40 to-white/10 backdrop-blur-[1px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(0,0,0,0.1),0_8px_16px_rgba(0,0,0,0.15)] border border-white/50 transition-all duration-300"></div>
+                                <div class="w-16 h-12 rounded-[2rem] bg-gradient-to-b from-white/40 to-white/10 backdrop-blur-[1px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),inset_0_-2px_4px_rgba(0,0,0,0.1),0_8px_16px_rgba(0,0,0,0.15)] border border-white/50 transition-all duration-300"></div>
                                 
                                 <!-- Shine reflection on top -->
-                                <div class="absolute top-1 w-8 h-3 bg-gradient-to-b from-white/80 to-transparent rounded-full opacity-60"></div>
+                                <div class="absolute top-1 w-10 h-3 bg-gradient-to-b from-white/80 to-transparent rounded-full opacity-60"></div>
                             </div>
                          </div>
                     </div>
