@@ -130,7 +130,6 @@ const CameraPage = ({ onNavigate }) => {
         if (isFreeMode) {
             // In free mode, just save and continue
             setCapturedImage(null);
-            alert("Photo ajoutée !");
         } else {
             // Guided mode logic
             if (currentGuideIndex < guides.length - 1) {
@@ -398,8 +397,8 @@ const CameraPage = ({ onNavigate }) => {
                     ${capturedImage 
                         ? html`
                             <button onClick=${savePhoto} class="text-white font-bold px-8 py-3 rounded-full bg-primary hover:bg-primary/90 shadow-lg transform active:scale-95 transition flex items-center space-x-2">
-                                <span>${isFreeMode ? 'Enregistrer' : (currentGuideIndex < guides.length - 1 ? 'Photo suivante' : 'Terminer')}</span>
-                                ${!isFreeMode && currentGuideIndex < guides.length - 1 
+                                <span>${isFreeMode ? 'Photo suivante' : (currentGuideIndex < guides.length - 1 ? 'Photo suivante' : 'Terminer')}</span>
+                                ${isFreeMode || (currentGuideIndex < guides.length - 1) 
                                     ? html`
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
