@@ -28,14 +28,16 @@ const Navigation = ({ active, onChange }) => {
     if (activeIndex === -1) return null;
 
     return html`
-        <nav class="absolute bottom-6 left-6 right-6 h-16 rounded-full px-4 z-50 transition-all duration-300
-            bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-xl border border-white/30 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] ring-1 ring-white/40"
+        <nav 
+            class="absolute bottom-6 left-6 right-6 h-16 rounded-full px-4 z-50 transition-all duration-300
+                   bg-white/30 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] ring-1 ring-white/50"
+            style="filter: url('#goo');"
         >
             <div class="relative w-full h-full grid grid-cols-5 items-center">
                 
                 <!-- Morphing Indicator -->
                 <div 
-                    class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center pointer-events-none transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)]"
+                    class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center pointer-events-none transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] z-20"
                     style="transform: translateX(${activeIndex * 100}%)"
                 >
                     <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-50' : 'scale-110'}">
@@ -88,6 +90,11 @@ const Navigation = ({ active, onChange }) => {
                         onClick=${() => onChange(item.id)}
                         title="${item.label}"
                     >
+                        <!-- Inactive Icon Background (for Goo effect) -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-20 transition-opacity duration-300">
+                             <div class="w-8 h-8 bg-neutral/20 rounded-full blur-sm"></div>
+                        </div>
+
                         <svg xmlns="http://www.w3.org/2000/svg" class="${iconClasses}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${item.icon}" />
                         </svg>
