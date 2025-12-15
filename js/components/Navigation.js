@@ -48,21 +48,13 @@ const Navigation = ({ active, onChange }) => {
                          >
                             <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-50' : 'scale-110'}">
                                 <!-- 
-                                     The SVG itself morphs from a "Blob" (thick stroke) to the "Icon" (normal stroke).
+                                     PURE GLASS INDICATOR
+                                     Instead of a colored blob, we use a semi-transparent, blurry circle.
+                                     The 'backdrop-blur' creates the glass distortion effect.
+                                     The 'mix-blend-mode' helps it blend with the background.
+                                     'shadow-inner' creates the 3D bevel look.
                                 -->
-                                <svg 
-                                    xmlns="http://www.w3.org/2000/svg" 
-                                    class="w-8 h-8 text-primary transition-all duration-300" 
-                                    fill="none" 
-                                    viewBox="0 0 24 24" 
-                                    stroke="currentColor"
-                                    style="stroke-width: ${isMoving ? '14px' : '2px'}; stroke-linecap: round; stroke-linejoin: round;"
-                                >
-                                    <path d="${activeItem.icon}" />
-                                </svg>
-                                
-                                <!-- Glow Effect behind the active icon -->
-                                <div class="absolute inset-0 bg-primary/30 blur-md rounded-full -z-10 transition-opacity duration-300 ${isMoving ? 'opacity-0' : 'opacity-100'}"></div>
+                                <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),inset_0_-1px_1px_rgba(0,0,0,0.1),0_4px_6px_rgba(0,0,0,0.1)] border border-white/30 transition-all duration-300"></div>
                             </div>
                          </div>
                     </div>
@@ -73,14 +65,14 @@ const Navigation = ({ active, onChange }) => {
                              class="absolute top-0 left-0 h-full w-1/5 flex items-center justify-center transition-transform duration-[400ms] ease-[cubic-bezier(0.68,-0.55,0.265,1.55)]"
                              style="transform: translateX(${activeIndex * 100}%)"
                          >
-                            <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-0 opacity-0' : 'scale-110 opacity-100'}">
+                            <div class="relative flex items-center justify-center transition-all duration-300 ${isMoving ? 'scale-75 opacity-50' : 'scale-110 opacity-100'}">
                                 <svg 
                                     xmlns="http://www.w3.org/2000/svg" 
-                                    class="w-8 h-8 text-primary transition-all duration-300" 
+                                    class="w-6 h-6 text-primary drop-shadow-md transition-all duration-300" 
                                     fill="none" 
                                     viewBox="0 0 24 24" 
                                     stroke="currentColor"
-                                    style="stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;"
+                                    style="stroke-width: 2.5px; stroke-linecap: round; stroke-linejoin: round;"
                                 >
                                     <path d="${activeItem.icon}" />
                                 </svg>
