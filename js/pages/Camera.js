@@ -340,7 +340,7 @@ const CameraPage = ({ onNavigate }) => {
                     </div>
                 `}
                 
-                ${isFreeMode && !capturedImage && !error && html`
+                ${isFreeMode && !capturedImage && !error && countdown === null && html`
                      <div class="absolute top-20 w-full text-center z-20 pointer-events-none">
                         <span class="bg-primary/80 text-white px-4 py-1 rounded-full text-sm font-bold backdrop-blur-sm uppercase tracking-widest shadow-lg">
                             MODE LIBRE
@@ -393,7 +393,7 @@ const CameraPage = ({ onNavigate }) => {
             </div>
 
             <!-- Footer Controls -->
-            ${!isReviewing && !showProposal && !isOverlayVisible && !showModeSelection && html`
+            ${!isReviewing && !showProposal && !isOverlayVisible && !showModeSelection && countdown === null && html`
                 <div class="bg-black p-8 pb-10 flex justify-center items-center space-x-12 relative z-20">
                     ${capturedImage 
                         ? html`

@@ -50,21 +50,6 @@
 </head>
 <body class="bg-gray-100 text-gray-900 h-screen w-screen flex justify-center overflow-hidden overscroll-none">
     <div id="app" class="w-full h-full max-w-md bg-white shadow-2xl flex flex-col relative"></div>
-    
-    <!-- SVG Filters for Liquid Effects -->
-    <svg style="position: absolute; width: 0; height: 0; pointer-events: none;">
-        <defs>
-            <filter id="goo">
-                <!-- 1. Blur the source graphic significantly -->
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <!-- 2. Apply a high contrast matrix to sharpen the blurred edges, creating the "goo" -->
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-                <!-- 3. Composite the original graphic on top (optional, but keeps icons sharp) -->
-                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
-            </filter>
-        </defs>
-    </svg>
-
     <script type="module" src="./js/app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
