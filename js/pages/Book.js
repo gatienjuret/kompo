@@ -5,9 +5,16 @@ import { usePhotos } from '../store/PhotoStore.js';
 const html = htm.bind(h);
 
 const BookPage = ({ onNavigate }) => {
+    // Load existing book photos from store
     const { userPhotos, addPhoto } = usePhotos();
-    const fileInputRef = useRef(null);
     
+    // Filter photos to only show book category
+    const bookPhotosFromStore = userPhotos
+        .filter(p => p.category === 'book')
+        .map(p => p.image_data);
+
+    const fileInputRef = useRef(null);
+
     // Fallback images if user has no photos
     const demoPhotos = [
         'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80',
@@ -27,7 +34,10 @@ const BookPage = ({ onNavigate }) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     // Add to local book photos only
-                    setBookPhotos(prev => [e.target.result, ...prev]);
+                    const newPhoto = e.target.result;
+                    setBookPhotos(prev => [newPhoto, ...prev]);
+                    // Also add to global store with category 'book'
+                    addPhoto(newPhoto, 'book');
                 };
                 reader.readAsDataURL(file);
             });
@@ -59,7 +69,9 @@ const BookPage = ({ onNavigate }) => {
         }
     };
 
-    const displayPhotos = bookPhotos.length > 0 ? [...bookPhotos, ...demoPhotos].slice(0, 4) : demoPhotos;
+    const displayPhotos = (bookPhotos.length > 0 || bookPhotosFromStore.length > 0)
+        ? [...bookPhotos, ...bookPhotosFromStore, ...demoPhotos].slice(0, 4) 
+        : demoPhotos;
 
     return html`
         <div class="h-full flex flex-col space-y-4 animate-fade-in bg-secondary pt-2">

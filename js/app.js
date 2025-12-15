@@ -89,12 +89,12 @@ function App() {
             `}
             
             <!-- Main Content -->
-            <main class="flex-1 overflow-y-auto ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'all-photos' || currentPage === 'archive-details') ? 'bg-black p-0' : 'bg-secondary px-6 pt-4 pb-24'}">
+            <main class="flex-1 ${currentPage === 'home' ? 'overflow-hidden' : 'overflow-y-auto scrolling-touch'} ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'all-photos' || currentPage === 'archive-details') ? 'bg-black p-0' : 'bg-secondary px-6 pt-4 pb-24'}">
                 ${renderPage()}
             </main>
 
             <!-- Navigation -->
-            ${currentPage !== 'camera' && currentPage !== 'profile' && currentPage !== 'all-photos' && currentPage !== 'archive-details' && currentPage !== 'login' && html`<${Navigation} active=${currentPage} onChange=${setCurrentPage} />`}
+            ${currentPage !== 'camera' && currentPage !== 'profile' && currentPage !== 'all-photos' && currentPage !== 'archive-details' && html`<${Navigation} active=${currentPage} onChange=${setCurrentPage} />`}
             
             <${NotificationsDrawer} isOpen=${isNotificationsOpen} onClose=${() => setIsNotificationsOpen(false)} />
         </div>
