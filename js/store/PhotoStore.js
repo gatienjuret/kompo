@@ -41,10 +41,9 @@ export const PhotoProvider = ({ children }) => {
             if (error) throw error;
 
             if (data) {
-                // On garde juste l'image_data pour l'affichage, mais on pourrait garder tout l'objet
-                const photos = data.map(p => p.image_data);
-                setUserPhotos(photos);
-                if (photos.length > 0) setLastPhoto(photos[0]);
+                // On garde l'objet complet maintenant, pas juste image_data
+                setUserPhotos(data);
+                if (data.length > 0) setLastPhoto(data[0].image_data);
             }
         } catch (error) {
             console.error('Erreur chargement photos:', error);
@@ -53,14 +52,20 @@ export const PhotoProvider = ({ children }) => {
         }
     };
 
-    const addPhoto = async (photoDataUrl) => {
+    const addPhoto = async (photoDataUrl, category = 'uncategorized') => {
         if (!user) {
             console.error("Impossible d'ajouter une photo : utilisateur non connecté");
             return;
         }
 
-        // 1. Mise à jour optimiste (pour que l'interface soit réactive tout de suite)
-        setUserPhotos(prev => [photoDataUrl, ...prev]);
+        const newPhoto = {
+            image_data: photoDataUrl,
+            category: category,
+            created_at: new Date().toISOString()
+        };
+
+        // 1. Mise à jour optimiste
+        setUserPhotos(prev => [newPhoto, ...prev]);
         setLastPhoto(photoDataUrl);
 
         // 2. Sauvegarde en base de données
@@ -71,14 +76,13 @@ export const PhotoProvider = ({ children }) => {
                     { 
                         user_id: user.id, 
                         image_data: photoDataUrl,
-                        category: 'uncategorized'
+                        category: category
                     }
                 ]);
 
             if (error) throw error;
         } catch (error) {
             console.error('Erreur sauvegarde photo:', error);
-            // En cas d'erreur, on pourrait annuler l'ajout (rollback) ici si on voulait être puriste
             alert("Erreur lors de la sauvegarde de la photo !");
         }
     };

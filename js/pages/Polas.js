@@ -1,14 +1,47 @@
 import { h } from 'https://unpkg.com/preact@latest?module';
 import htm from 'https://unpkg.com/htm?module';
+import { usePhotos } from '../store/PhotoStore.js';
 const html = htm.bind(h);
 
 const PolasPage = ({ onNavigate }) => {
-    // Mock archive data
-    const archives = [
-        { date: 'Oct 2023', cover: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', count: 8 },
-        { date: 'Juin 2023', cover: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80', count: 12 },
-        { date: 'Jan 2023', cover: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80', count: 10 },
-    ];
+    const { userPhotos } = usePhotos();
+
+    // Group photos by month/year
+    const getGroupedArchives = () => {
+        const polaPhotos = userPhotos.filter(p => p.category === 'pola');
+        
+        const grouped = polaPhotos.reduce((acc, photo) => {
+            const date = new Date(photo.created_at || Date.now());
+            const monthYear = date.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
+            // Capitalize first letter
+            const formattedDate = monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
+            
+            if (!acc[formattedDate]) {
+                acc[formattedDate] = [];
+            }
+            acc[formattedDate].push(photo);
+            return acc;
+        }, {});
+
+        // Convert to array and sort (most recent first) - assuming created_at order
+        // Mock data fallback if empty
+        if (Object.keys(grouped).length === 0) {
+            return [
+                { date: 'Oct 2023', cover: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', count: 8 },
+                { date: 'Juin 2023', cover: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=300&q=80', count: 12 },
+                { date: 'Jan 2023', cover: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80', count: 10 },
+            ];
+        }
+
+        return Object.entries(grouped).map(([date, photos]) => ({
+            date,
+            cover: photos[0].image_data, // Use first photo as cover
+            count: photos.length,
+            photos: photos // Keep reference to photos
+        }));
+    };
+
+    const archives = getGroupedArchives();
 
     return html`
         <div class="h-full flex flex-col space-y-4 animate-fade-in bg-secondary pt-2">

@@ -1,17 +1,38 @@
 import { h } from 'https://unpkg.com/preact@latest?module';
 import htm from 'https://unpkg.com/htm?module';
+import { usePhotos } from '../store/PhotoStore.js';
 const html = htm.bind(h);
 
 const ArchiveDetailsPage = ({ date, onBack }) => {
-    // Simuler des photos pour l'archive
-    const photos = [
-        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1521119989659-a83eee488058?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80'
-    ];
+    const { userPhotos } = usePhotos();
+
+    // Get photos for this date
+    const getPhotosForDate = () => {
+        const polaPhotos = userPhotos.filter(p => p.category === 'pola');
+        
+        const filtered = polaPhotos.filter(photo => {
+            const photoDate = new Date(photo.created_at || Date.now());
+            const monthYear = photoDate.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
+            const formattedDate = monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
+            return formattedDate === date;
+        });
+
+        // Fallback for mock data dates
+        if (filtered.length === 0 && (date === 'Oct 2023' || date === 'Juin 2023' || date === 'Jan 2023')) {
+            return [
+                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1521119989659-a83eee488058?auto=format&fit=crop&w=800&q=80',
+                'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80'
+            ];
+        }
+
+        return filtered.map(p => p.image_data);
+    };
+
+    const photos = getPhotosForDate();
 
     return html`
         <div class="min-h-full flex flex-col bg-secondary animate-fade-in">

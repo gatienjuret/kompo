@@ -29,6 +29,13 @@ const CameraPage = ({ onNavigate }) => {
         { src: './assets/guide_portrait.png', name: 'Portrait' }
     ];
 
+    const handleStart = (e) => {
+        e.stopPropagation();
+        setIsOverlayVisible(false);
+    };
+
+    const timerOptions = [3, 5, 10];
+
     const startCamera = async () => {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             setError("Votre navigateur ne supporte pas l'accès à la caméra.");
@@ -161,9 +168,9 @@ const CameraPage = ({ onNavigate }) => {
     };
     
     const handleSendToAgency = async () => {
-        // Save all photos to global store
+        // Save all photos to global store with category 'pola'
         for (const photo of photos) {
-            await addPhoto(photo);
+            await addPhoto(photo, 'pola');
         }
         alert(`Photos envoyées à l'agence avec la note : "${userNote}"`);
         onNavigate('polas');
@@ -185,12 +192,15 @@ const CameraPage = ({ onNavigate }) => {
         setShowModeSelection(false);
     };
 
-    const handleStart = (e) => {
-        e.stopPropagation();
-        setIsOverlayVisible(false);
+    const deletePhoto = (indexToDelete) => {
+        if (confirm("Voulez-vous supprimer cette photo ?")) {
+            setPhotos(prevPhotos => prevPhotos.filter((_, index) => index !== indexToDelete));
+            
+            // If in guided mode, we might need to adjust currentGuideIndex logic, 
+            // but for simplicity in review mode, we just remove it.
+            // If all photos are deleted, we could go back to camera or stay in review.
+        }
     };
-
-    const timerOptions = [3, 5, 10];
 
     return html`
         <div class="h-full bg-black relative flex flex-col animate-fade-in">
@@ -270,8 +280,20 @@ const CameraPage = ({ onNavigate }) => {
                             <!-- Photos Grid -->
                             <div class="grid grid-cols-2 gap-4 mb-8">
                                 ${photos.map((photo, index) => html`
-                                    <div class="aspect-[3/4] rounded-lg overflow-hidden relative border border-white/20">
+                                    <div class="aspect-[3/4] rounded-lg overflow-hidden relative border border-white/20 group">
                                         <img src="${photo}" class="w-full h-full object-cover" />
+                                        
+                                        <!-- Delete Button -->
+                                        <button 
+                                            onClick=${(e) => { e.stopPropagation(); deletePhoto(index); }}
+                                            class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                                            title="Supprimer"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+
                                         <div class="absolute bottom-0 w-full bg-black/60 backdrop-blur-sm p-1 text-center">
                                             <span class="text-white text-xs font-medium uppercase tracking-wider">
                                                 ${index < guides.length ? guides[index].name : `Libre ${index - guides.length + 1}`}

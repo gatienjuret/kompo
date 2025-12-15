@@ -1,5 +1,5 @@
 import { h } from 'https://unpkg.com/preact@latest?module';
-import { useRef } from 'https://unpkg.com/preact@latest/hooks/dist/hooks.module.js?module';
+import { useRef, useState } from 'https://unpkg.com/preact@latest/hooks/dist/hooks.module.js?module';
 import htm from 'https://unpkg.com/htm?module';
 import { usePhotos } from '../store/PhotoStore.js';
 const html = htm.bind(h);
@@ -16,6 +16,9 @@ const BookPage = ({ onNavigate }) => {
         'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80'
     ];
 
+    // Local state for book photos
+    const [bookPhotos, setBookPhotos] = useState([]);
+
     // Handle file selection from gallery
     const handleFileSelect = (event) => {
         const files = event.target.files;
@@ -23,7 +26,8 @@ const BookPage = ({ onNavigate }) => {
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    addPhoto(e.target.result);
+                    // Add to local book photos only
+                    setBookPhotos(prev => [e.target.result, ...prev]);
                 };
                 reader.readAsDataURL(file);
             });
@@ -55,7 +59,7 @@ const BookPage = ({ onNavigate }) => {
         }
     };
 
-    const displayPhotos = userPhotos.length > 0 ? [...userPhotos, ...demoPhotos].slice(0, 4) : demoPhotos;
+    const displayPhotos = bookPhotos.length > 0 ? [...bookPhotos, ...demoPhotos].slice(0, 4) : demoPhotos;
 
     return html`
         <div class="h-full flex flex-col space-y-4 animate-fade-in bg-secondary pt-2">
