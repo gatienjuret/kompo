@@ -23,7 +23,12 @@ const AllPhotosPage = ({ onNavigate, onBack }) => {
         'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=300&q=80'
     ];
 
-    const displayPhotos = userPhotos.length > 0 ? [...userPhotos, ...demoPhotos] : demoPhotos;
+    // Filter photos to only show book category
+    const bookPhotos = userPhotos
+        .filter(p => p.category === 'book')
+        .map(p => p.image_data);
+
+    const displayPhotos = bookPhotos.length > 0 ? [...bookPhotos, ...demoPhotos] : demoPhotos;
 
     // Helper to get status
     const getStatus = (index) => {

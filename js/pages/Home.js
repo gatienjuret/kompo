@@ -4,15 +4,8 @@ import { usePhotos } from '../store/PhotoStore.js';
 const html = htm.bind(h);
 
 const HomePage = ({ onNavigate }) => {
-    const { userPhotos } = usePhotos();
-    
-    // Find the most recent photo with category 'pola'
-    // Since userPhotos is already sorted by date desc, the first match is the latest
-    const lastPola = userPhotos.find(p => p.category === 'pola');
-    
-    const bgImage = lastPola 
-        ? `url('${lastPola.image_data}')` 
-        : "url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80')";
+    const { lastPhoto } = usePhotos();
+    const bgImage = lastPhoto ? `url('${lastPhoto}')` : "url('./assets/polas-mannequin-paris-3.webp')";
 
     return html`
         <div class="flex flex-col h-full px-0 space-y-8 animate-fade-in bg-secondary dark:bg-secondary-dark transition-colors duration-300">
