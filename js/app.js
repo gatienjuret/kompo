@@ -1,8 +1,10 @@
 import { h, render } from 'https://unpkg.com/preact@latest?module';
-import { useState } from 'https://unpkg.com/preact@latest/hooks/dist/hooks.module.js?module';
+import { useState, useEffect } from 'https://unpkg.com/preact@latest/hooks/dist/hooks.module.js?module';
 import htm from 'https://unpkg.com/htm?module';
 import { PhotoProvider } from './store/PhotoStore.js';
 import { AuthProvider, useAuth } from './store/AuthStore.js';
+import { NotificationProvider, useNotification } from './store/NotificationStore.js';
+import Notification from './components/Notification.js';
 
 const html = htm.bind(h);
 
@@ -19,12 +21,38 @@ import FinancePage from './pages/Finance.js';
 import ArchiveDetailsPage from './pages/ArchiveDetails.js';
 import NotificationsDrawer from './components/NotificationsDrawer.js';
 
+// SplashScreen Component
+const SplashScreen = () => {
+    return html`
+        <div class="flex items-center justify-center h-full w-full bg-[#F1EFEA]">
+            <img src="/website/images/Logo/LoadingPage.gif" alt="Loading" class="max-w-[105%] max-h-[105%] object-contain" />
+        </div>
+    `;
+};
+
 function App() {
     const [currentPage, setCurrentPage] = useState('home');
     const [previousPage, setPreviousPage] = useState('home');
     const [selectedArchiveDate, setSelectedArchiveDate] = useState(null);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const { user, loading } = useAuth();
+    const [showSplash, setShowSplash] = useState(true);
+    const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(false);
+    const { notification, hideNotification, isNavbarHidden } = useNotification();
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMinimumTimeElapsed(true);
+        }, 1000); // Minimum splash screen duration of 1 second
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        if (!loading && minimumTimeElapsed) {
+            setShowSplash(false);
+        }
+    }, [loading, minimumTimeElapsed]);
 
     const navigateToProfile = () => {
         setPreviousPage(currentPage);
@@ -67,16 +95,18 @@ function App() {
 
     return html`
         <div class="flex flex-col h-full bg-secondary font-sans text-neutral">
-            <!-- Header -->
-            ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'login' || currentPage === 'all-photos' || currentPage === 'archive-details') ? null : html`
+            ${showSplash ? html`<${SplashScreen} />` : html`
+                <!-- Header -->
+                ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'login' || currentPage === 'all-photos' || currentPage === 'archive-details') ? null : (
+            html`
                 <header class="h-16 border-b-0 flex justify-between items-center px-6 bg-secondary z-20 shrink-0 pt-4">
-                    <button 
+                    <button
                         onClick=${navigateToProfile}
                         class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md hover:scale-105 transition-transform overflow-hidden"
                     >
                         ${user ? (user.email[0].toUpperCase()) : 'MJ'}
                     </button>
-                    <button 
+                    <button
                         onClick=${() => setIsNotificationsOpen(true)}
                         class="relative p-2 text-neutral/40 hover:text-primary transition"
                     >
@@ -86,19 +116,21 @@ function App() {
                         <span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border border-secondary animate-pulse"></span>
                     </button>
                 </header>
-            `}
-            
-            <!-- Main Content -->
-            <main class="flex-1 ${currentPage === 'home' ? 'overflow-hidden' : 'overflow-y-auto scrolling-touch'} ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'all-photos' || currentPage === 'archive-details') ? 'bg-black p-0' : 'bg-secondary px-6 pt-4 pb-24'}">
-                ${renderPage()}
-            </main>
+            `
+        )}
+                
+                <!-- Main Content -->
+                <main class="flex-1 ${currentPage === 'home' ? 'overflow-hidden' : 'overflow-y-auto scrolling-touch'} ${(currentPage === 'camera' || currentPage === 'profile' || currentPage === 'all-photos' || currentPage === 'archive-details') ? 'bg-black p-0' : 'bg-secondary px-6 pt-4 pb-24'}">
+                    ${renderPage()}
+                </main>
 
-            <!-- Navigation -->
-            ${currentPage !== 'camera' && currentPage !== 'profile' && currentPage !== 'all-photos' && currentPage !== 'archive-details' && html`<${Navigation} active=${currentPage} onChange=${setCurrentPage} />`}
-            
-            <${NotificationsDrawer} isOpen=${isNotificationsOpen} onClose=${() => setIsNotificationsOpen(false)} />
+                <!-- Navigation -->
+                ${currentPage !== 'camera' && currentPage !== 'profile' && currentPage !== 'all-photos' && currentPage !== 'archive-details' && (
+                    html`<${Navigation} active=${currentPage} onChange=${setCurrentPage} isNavbarHidden=${isNavbarHidden} class="${isNavbarHidden ? '' : ''}" />`
+                )}
+            `}
         </div>
     `;
 }
 
-render(html`<${AuthProvider}><${PhotoProvider}><${App} /><//><//>`, document.getElementById('app'));
+render(html`<${AuthProvider}><${PhotoProvider}><${NotificationProvider}><${App} /><//><//><//>`, document.getElementById('app'));

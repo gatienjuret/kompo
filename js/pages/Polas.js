@@ -1,10 +1,43 @@
 import { h } from 'https://unpkg.com/preact@latest?module';
 import htm from 'https://unpkg.com/htm?module';
+import { useState, useRef } from 'https://unpkg.com/preact@latest/hooks/dist/hooks.module.js?module';
+import { useNotification } from '../store/NotificationStore.js';
 import { usePhotos } from '../store/PhotoStore.js';
 const html = htm.bind(h);
 
 const PolasPage = ({ onNavigate }) => {
-    const { userPhotos } = usePhotos();
+    const { userPhotos, addPhoto } = usePhotos();
+    const { showNotification } = useNotification();
+    const fileInputRef = useRef(null);
+
+    const handleFileSelect = async (event) => {
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
+
+        const uploadPromises = [];
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type.startsWith('image/')) {
+                uploadPromises.push(new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                        await addPhoto(e.target.result, 'pola'); // Wait for addPhoto to complete
+                        resolve(); // Resolve this promise after addPhoto is done
+                    };
+                    reader.readAsDataURL(file);
+                }));
+            }
+        }
+
+        await Promise.all(uploadPromises); // Wait for all uploads to complete
+        showNotification("Vos photos ont bien été envoyées à votre agence."); // Display confirmation
+        event.target.value = ''; // Clear the input value
+    };
+
+    const triggerFileInput = () => {
+        fileInputRef.current.click();
+    };
 
     // Group photos by month/year
     const getGroupedArchives = () => {
@@ -65,12 +98,29 @@ const PolasPage = ({ onNavigate }) => {
                 
                 <button 
                     onClick=${() => onNavigate('camera')}
-                    class="bg-white text-black px-8 py-5 rounded-2xl font-bold text-lg w-full hover:bg-gray-100 transition transform active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center justify-center space-x-3"
+                    class="bg-primary text-white px-8 py-5 rounded-2xl font-bold text-lg w-full hover:bg-primary/90 transition transform active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center justify-center space-x-3"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     <span>Lancer le shooting</span>
+                </button>
+                <input 
+                    type="file" 
+                    ref=${fileInputRef} 
+                    onChange=${handleFileSelect} 
+                    accept="image/*" 
+                    multiple 
+                    hidden 
+                />
+                <button 
+                    onClick=${triggerFileInput}
+                    class="mt-4 border border-white text-white px-8 py-5 rounded-2xl font-bold text-lg w-full hover:bg-white/10 transition transform active:scale-95 flex items-center justify-center space-x-3"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Ajouter depuis la galerie</span>
                 </button>
             </div>
 

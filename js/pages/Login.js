@@ -21,7 +21,7 @@ export default function LoginPage({ onNavigate }) {
         try {
             if (isLogin) {
                 await signIn(email, password);
-                onNavigate('profile'); // Rediriger vers le profil après connexion
+                onNavigate('home'); // Rediriger vers le profil après connexion
             } else {
                 await signUp(email, password);
                 alert('Compte créé ! Vérifiez vos emails pour confirmer.');

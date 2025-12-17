@@ -1,8 +1,10 @@
 import { h } from 'https://unpkg.com/preact@latest?module';
+import { useState } from 'https://unpkg.com/preact@latest/hooks/dist/hooks.module.js?module';
 import htm from 'https://unpkg.com/htm?module';
 const html = htm.bind(h);
 
 const CalendarPage = () => {
+    const [selectedDay, setSelectedDay] = useState(null);
     // Generate calendar days for December 2024 (example)
     const daysInMonth = 31;
     const startDay = 5; // Friday (0=Sun, 1=Mon, ..., 5=Fri)
@@ -40,6 +42,10 @@ const CalendarPage = () => {
         { day: '16', month: 'DEC', title: 'Fitting Zara', time: '10:00', location: 'Studio A', type: 'job' },
         { day: '20', month: 'DEC', title: 'Option Pub TV', time: 'TBD', location: 'TBD', type: 'option' },
     ];
+
+    const filteredEvents = selectedDay
+        ? detailedEvents.filter(event => parseInt(event.day) === selectedDay)
+        : detailedEvents;
 
     const getTypeLabelColor = (type) => {
         switch(type) {
@@ -82,8 +88,12 @@ const CalendarPage = () => {
                         const event = getEventForDay(day);
                         const isToday = day === 14; // Mock today
                         return html`
-                            <div class="flex flex-col items-center justify-center h-8 relative cursor-pointer group hover:scale-110 transition-transform">
-                                <span class="text-sm font-medium ${isToday ? 'bg-neutral text-white w-8 h-8 flex items-center justify-center rounded-full shadow-md' : 'text-neutral'}">
+                            <div 
+                                class="flex flex-col items-center justify-center h-8 relative cursor-pointer group hover:scale-110 transition-transform"
+                                onClick=${() => setSelectedDay(day)}
+                            >
+                                <span class="text-sm font-medium ${isToday ? 'text-lg font-extrabold text-neutral w-8 h-8 flex items-center justify-center rounded-full' : selectedDay === day ? 'bg-primary text-white w-8 h-8 flex items-center justify-center rounded-full shadow-md' : 'text-neutral'}"
+                                      style="">
                                     ${day}
                                 </span>
                                 ${event && html`
@@ -99,7 +109,7 @@ const CalendarPage = () => {
             <div>
                 <h3 class="font-bold text-lg mb-4 text-neutral">À venir</h3>
                 <div class="space-y-4">
-                    ${detailedEvents.map(event => html`
+                    ${filteredEvents.map(event => html`
                         <div class="bg-white p-4 rounded-2xl shadow-sm border border-accent flex items-center hover:shadow-md transition hover:border-primary/30 group">
                             <div class="flex-shrink-0 w-14 text-center mr-4">
                                 <div class="text-xs text-neutral/40 font-bold uppercase group-hover:text-primary transition-colors">${event.month}</div>
